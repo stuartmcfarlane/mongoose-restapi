@@ -1,0 +1,20 @@
+{
+  "name": "node-restapi",
+  "version": "0.0.0",
+  "description": "Takes mongoose models and turns them into a rest api",
+  "main": "index.js",
+  "scripts": {
+    "test": "nodeunit test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "ssh://git@bitbucket.org/smcfarlane/node-restapi.git"
+  },
+  "keywords": [
+    "rest",
+    "api",
+    "mongoose"
+  ],
+  "author": "Stuart McFarlane",
+  "license": "BSD"
+}
