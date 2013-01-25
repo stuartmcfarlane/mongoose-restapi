@@ -4,8 +4,8 @@
  */
 
 var
-restapi = require('./lib/restapi.js');
+Server = require('./lib/server.js');
 
 module.exports = {
-	use: restapi.use
+	Server: Server
 };

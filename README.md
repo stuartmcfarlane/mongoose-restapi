@@ -31,6 +31,7 @@ Sometning like
 	}),
 	TestModel = mongoose.model('Test', TestSchema),
 	restapiServer = new restapi.Server({
+		base: '/api',
 		app: app,
 		models: [
 			TestModel

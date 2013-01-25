@@ -1,48 +1,36 @@
 /*
- * restapi/test/restapi.js
+ * mongoose-restapi/test/server.js
  *
+ * Unit tests for mongoose-restapi/lib/server.js
  */
 
-var
-express = null,
-mongoose = null,
-app = null,
-restapi = null,
-TestSchema = null,
-TestModel = null;
+	var
+	express = require("express"),
+	app = express(),
+	mongoose = require('mongoose'),
+	restapi = require('..'),
+	ServerTestSchema = mongoose.Schema({
+		name: {type: String, required: true},
+		description: {type: String, required: true}
+	}),
+	ServerTestModel = mongoose.model('ServerTest', ServerTestSchema),
+	restapiServer = new restapi.Server({
+		base: '/api',
+		app: app,
+		models: [
+			ServerTestModel
+		]
+	});
 
-express = require("express");
-mongoose = require('mongoose');
-app = express();
-restapi = require('..');
-
-// Create test schema and model
-TestSchema = mongoose.Schema({
-	name: {type: String, required: true},
-	description: {type: String, required: true}
-});
-TestModel = mongoose.model('Test', TestSchema);
-
-// Configure express
-app.configure(function () {
-	app.use(express.bodyParser());
-	app.use(express.methodOverride());
-	app.use(app.router);
-	app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
-});
-
-restapi.use(app, [{
-	modelName:'test',
-	Schema: TestSchema,
-	Model: TestModel
-}], {
-	baseRoute: '/api'
-});
+	app.configure(function () {
+		app.use(express.bodyParser());
+		app.use(app.router);
+	});
 
 
-exports['restapi tests'] = {
+exports['restapi server tests'] = {
 	setUp: function(fn){
-		// Create/use Test database
+		// Create/use ServerTest database
 		mongoose.connect('mongodb://localhost/restapi-test');
 
 		fn();
@@ -53,13 +41,13 @@ exports['restapi tests'] = {
 			fn();
 		});
 	},
-	'can "use" express and mongoose': function(test){
+	'can create Server express and mongoose': function(test){
 		test.done();
 	},
-	'GET /api/tests returns array': function(test){
+	'GET /api/servertests returns array': function(test){
 		app.router({
 			method: 'get',
-			url: '/api/tests'
+			url: '/api/servertests'
 		},{
 			send: function(json){
 				test.equal(typeof json, 'object');
@@ -71,10 +59,10 @@ exports['restapi tests'] = {
 			test.done();
 		});
 	},
-	'POST /api/tests adds an item': function(test){
+	'POST /api/servertests adds an item': function(test){
 		app.router({
 			method: 'post',
-			url: '/api/tests',
+			url: '/api/servertests',
 			body: {name:"t1n",description:"t1d"}
 		},{
 			send: function(json){
@@ -84,14 +72,14 @@ exports['restapi tests'] = {
 			}
 		},
 		function(err){
-			test.ok(false, 'failed to route /api.tests');
+			test.ok(false, 'failed to route /api.servertests');
 			test.done();
 		});
 	},
-	'GET /api/tests/:id gets an item': function(test){
+	'GET /api/servertests/:id gets an item': function(test){
 		app.router({
 			method: 'get',
-			url: '/api/tests'
+			url: '/api/servertests'
 		},{
 			send: function(json){
 				test.ok(json.length !== 0);
@@ -99,27 +87,27 @@ exports['restapi tests'] = {
 				// now put a new name in the last elemenet of the index
 				app.router({
 					method: 'get',
-					url: '/api/tests/' + t._id
+					url: '/api/servertests/' + t._id
 				},{
 					send: function(json) {
 						test.equal(json.name, t.name);
 						test.done();
 					}
 				}, function() {
-					test.ok(false, 'failed to route PUT /api/tests/' + t._id);
+					test.ok(false, 'failed to route PUT /api/servertests/' + t._id);
 					test.done();
 				});
 			}
 		}, function(){
-			test.ok(false, 'failed to route /api/tests');
+			test.ok(false, 'failed to route /api/servertests');
 			test.done();
 		});
 	},
-	'PUT /api/tests modifies an item': function(test){
+	'PUT /api/servertests modifies an item': function(test){
 		// first lets get the index
 		app.router({
 			method: 'get',
-			url: '/api/tests'
+			url: '/api/servertests'
 		},{
 			send: function(json){
 				test.ok(json.length !== 0);
@@ -128,7 +116,7 @@ exports['restapi tests'] = {
 				t.name = 'test put';
 				app.router({
 					method: 'put',
-					url: '/api/tests/' + t._id,
+					url: '/api/servertests/' + t._id,
 					body: {name: t.name, description: t.description}
 				},{
 					send: function(json) {
@@ -136,12 +124,12 @@ exports['restapi tests'] = {
 						test.done();
 					}
 				}, function() {
-					test.ok(false, 'failed to route PUT /api/tests/' + t._id);
+					test.ok(false, 'failed to route PUT /api/servertests/' + t._id);
 					test.done();
 				});
 			}
 		}, function(){
-			test.ok(false, 'failed to route /api/tests');
+			test.ok(false, 'failed to route /api/servertests');
 			test.done();
 		});
 	}
