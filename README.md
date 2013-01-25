@@ -1,5 +1,5 @@
-node-restapi
-============
+mongoose-restapi
+================
 
 Turn mongoose models into a REST API
 ------------------------------------
