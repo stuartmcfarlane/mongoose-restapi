@@ -35,8 +35,6 @@
 		}
 	});
 
-	console.log(restapi);
-
 	app.configure(function () {
 		app.use(express.bodyParser());
 		app.use(app.router);
