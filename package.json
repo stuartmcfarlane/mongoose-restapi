@@ -1,5 +1,6 @@
 {
   "name": "mongoose-restapi",
+  "private": true,
   "version": "0.0.0",
   "description": "Takes mongoose models and turns them into a rest api",
   "main": "index.js",
