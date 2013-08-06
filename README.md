@@ -1,7 +1,7 @@
 mongoose-restapi
 ================
 
-Not yet ready for public consumption...
+NB: I have abandoned this module in favour of [wprl/baucis](https://github.com/wprl/baucis)
 
 Turn mongoose models into a REST API
 ------------------------------------
